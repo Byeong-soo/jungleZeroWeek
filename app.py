@@ -8,6 +8,13 @@ def parts():
     return render_template('index.html',
     title = '세탁자리구함')
 
+# 마이페이지
+@app.route('/mypage')
+def mypage():
+   return render_template('mypage.html')
+
+
+
 
 
 if __name__ == '__main__':
