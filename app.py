@@ -11,7 +11,9 @@ def parts():
 # 마이페이지
 @app.route('/mypage')
 def mypage():
-   return render_template('mypage.html')
+   return render_template('mypage.html',
+   title = '마이페이지')
+   
 
 
 
