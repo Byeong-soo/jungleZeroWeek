@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='css/join.css')}}" />
 
+    <script src="{{ url_for('static', filename='js/join.js') }}"></script>
     <script defer src="https://use.fontawesome.com/releases/v6.2.0/js/all.js"></script>
     {% if title %}
     <title>{{ title }}</title>
@@ -26,11 +27,11 @@
                 <div class="columns is-centered custom-contents">
                     <div class="column is-half">
 
-                        <div class="mt-5">
+                        <form class="mt-5" action="/joinMember" method="post">
 
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    <input class="input" type="text" placeholder="아이디">
+                                    <input class="input" type="text" placeholder="아이디" name="id">
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-id-badge"></i>
                                     </span>
@@ -42,7 +43,7 @@
 
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <input class="input" type="password" placeholder="비밀번호">
+                                    <input class="input" type="password" placeholder="비밀번호" name="password">
                                     <span class="icon is-small is-left">
                                         <span class="mdi mdi-lock"></span>
                                         <!-- <i class="fa-duotone fa-shield-keyhole"></i> -->
@@ -52,7 +53,7 @@
 
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <input class="input" type="password" placeholder="비밀번호 확인">
+                                    <input class="input" type="password" placeholder="비밀번호 확인" name="passwordCheck">
                                     <span class="icon is-small is-left">
                                         <span class="mdi mdi-lock-check"></span>
                                     </span>
@@ -61,7 +62,7 @@
 
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    <input class="input" type="text" placeholder="이름">
+                                    <input class="input" type="text" placeholder="이름" name="name">
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-signature"></i>
                                     </span>
@@ -73,7 +74,7 @@
 
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    <input class="input" type="number" placeholder="호수">
+                                    <input class="input" type="number" placeholder="호수" name="roomNumber">
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-person-shelter"></i>
                                     </span>
@@ -85,7 +86,7 @@
 
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    <input class="input" type="number" placeholder="휴대폰 번호 ex)01011112222">
+                                    <input class="input" type="number" placeholder="휴대폰 번호 ex)01011112222" name="phoneNumber">
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-mobile"></i>
                                     </span>
@@ -96,10 +97,12 @@
                             </div>
 
                             <div class="is-flex mt-5">
-                                    <button class="is-flex-grow-1 button is-success mr-1 ">회원가입</button>
-                                    <button class="is-flex-grow-1 button is-danger ml-1" onclick="location.replace('/');">되돌아가기</button>
+                                    <button type="submit" class="is-flex-grow-1 button is-link mr-1">회원가입</button>
+                                    <button type="reset" class="is-flex-grow-1 button is-danger mr-1">초기화</button>
                             </div>
-
+                            <div class="is-flex mt-1">
+                                <button type="button" class="is-flex-grow-1 button is-link" onclick="location.replace('/');">되돌아가기</button>
+                            </div>
                         </form>
 
                     </div>
