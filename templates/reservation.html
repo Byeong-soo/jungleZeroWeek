@@ -1,12 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+    <style>
+        .top {
+            margin-top:150px;
+        }
+
+        .date {
+            margin-left: 250px;
+            font-size: 20px;
+            font-weight: bolder;
+        }
+        .start{
+            width:200px;
+            font-size:50px;
+        }
+        .reserv{
+            display: inline;
+        }
+
+        #title {
+            margin-left: 250px;
+            font-size: 40px;
+            font-weight: bolder;
+        }
+
+        #upper_button {
+            width: 200px;
+            float: right;
+            margin-right: 400px;
+        }
+    </style>
+
     <title>reservation</title>
 </head>
+
 <body>
-    
+    <div class="top">
+        <span id="title">세탁기 예약 현황</span>
+        <div class="field is-grouped" id="upper_button">
+            <p class="control">
+                <button class="button is-link">
+                    My Page
+                </button>
+            </p>
+            <p class="control">
+                <button class="button is-danger">
+                    로그아웃
+                </button>
+            </p>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="date">
+        <label for="select_date" class="mr-5">날짜 :</label>
+
+        <input class="mr-5" type="date" id="start" name="laundary_date" value="2022-09-22" min="2022-09-22" max="2023-03-31">
+
+
+        <label class="mr-5" for="from" id="time">시간 : </label>
+        <select id="from" class="mr-5">
+            <option value="0">00:00 ~ 02:00</option>
+            <option value="0">02:00 ~ 04:00</option>
+            <option value="0">04:00 ~ 06:00</option>
+            <option value="0">06:00 ~ 08:00</option>
+            <option value="0">08:00 ~ 10:00</option>
+            <option value="0">10:00 ~ 12:00</option>
+            <option value="0">12:00 ~ 14:00</option>
+            <option value="0">14:00 ~ 16:00</option>
+            <option value="0">16:00 ~ 18:00</option>
+            <option value="0">18:00 ~ 20:00</option>
+            <option value="0">20:00 ~ 22:00</option>
+            <option value="0">22:00 ~ 24:00</option>
+        </select>
+            <button class="button is-link">
+                예약하기
+            </button>
+
+
+    </div>
+    </div>
+
+    <div>
+        <img src=""
+    </div>
+
 </body>
+
 </html>
