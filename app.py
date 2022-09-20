@@ -8,6 +8,15 @@ def main():
     return render_template('index.html',
     title = '세탁자리구함')
 
+# 마이페이지
+@app.route('/mypage')
+def mypage():
+   return render_template('mypage.html',
+   title = '마이페이지')
+   
+
+
+
 
 @app.route('/joinMember', methods=['GET'])
 def join():
