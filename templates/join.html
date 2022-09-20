@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/join.css')}}" />
+
+    <script defer src="https://use.fontawesome.com/releases/v6.2.0/js/all.js"></script>
+    {% if title %}
+    <title>{{ title }}</title>
+    {% endif %}
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="columns is-mobile custom-title">
+            <div class="column is-three-fifths is-offset-one-fifth">
+                <div class="mt-5 has-text-centered">
+                    <h1 class="title is-1">회원가입</h1>
+                </div>
+
+                <div class="columns is-centered custom-contents">
+                    <div class="column is-half">
+
+                        <div class="mt-5">
+
+                            <div class="field">
+                                <p class="control has-icons-left has-icons-right">
+                                    <input class="input" type="text" placeholder="아이디">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-id-badge"></i>
+                                    </span>
+                                    <span class="icon is-small is-right">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input class="input" type="password" placeholder="비밀번호">
+                                    <span class="icon is-small is-left">
+                                        <span class="mdi mdi-lock"></span>
+                                        <!-- <i class="fa-duotone fa-shield-keyhole"></i> -->
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="field">
+                                <p class="control has-icons-left">
+                                    <input class="input" type="password" placeholder="비밀번호 확인">
+                                    <span class="icon is-small is-left">
+                                        <span class="mdi mdi-lock-check"></span>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="field">
+                                <p class="control has-icons-left has-icons-right">
+                                    <input class="input" type="text" placeholder="이름">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-signature"></i>
+                                    </span>
+                                    <span class="icon is-small is-right">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="field">
+                                <p class="control has-icons-left has-icons-right">
+                                    <input class="input" type="number" placeholder="호수">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-person-shelter"></i>
+                                    </span>
+                                    <span class="icon is-small is-right">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="field">
+                                <p class="control has-icons-left has-icons-right">
+                                    <input class="input" type="number" placeholder="휴대폰 번호 ex)01011112222">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-mobile"></i>
+                                    </span>
+                                    <span class="icon is-small is-right">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="is-flex mt-5">
+                                    <button class="is-flex-grow-1 button is-success mr-1 ">회원가입</button>
+                                    <button class="is-flex-grow-1 button is-danger ml-1" onclick="location.replace('/');">되돌아가기</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- container end-->
+</body>
+
+</html>
