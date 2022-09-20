@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+    <style>
+        img {
+            width: 200px;
+        }
+
+        .top {
+            margin-top: 150px;
+        }
+
+        .date {
+            margin-left: 250px;
+            font-size: 20px;
+            font-weight: bolder;
+        }
+
+        .start {
+            width: 200px;
+            font-size: 50px;
+        }
+
+        #title {
+            margin-left: 250px;
+            font-weight: bolder;
+        }
+
+        #upper_button {
+            width: 200px;
+            float: right;
+            margin-right: 400px;
+        }
+
+        .laundry {
+            width: 1400px;
+            margin: auto;
+        }
+
+        .laundry_A {
+            position:absolute;
+        }
+
+        #circle_inuse {
+            background: red;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+        }
+
+        #circle_available {
+            background: yellowgreen;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+
+    <script>
+
+    </script>
+
+
+    {% if title %}
+    <title>{{ title }}</title>
+    {% endif %}
+</head>
+
+<body>
+    <div class="top">
+        <span class="is-size-1" id="title">세탁기 예약 현황</span>
+        <div class="field is-grouped is-pulled-right" id="upper_button">
+            <p class="control">
+                <button class="button is-link">
+                    My Page
+                </button>
+            </p>
+            <p class="control">
+                <button class="button is-danger">
+                    로그아웃
+                </button>
+            </p>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="date">
+        <label for="select_date" class="mr-5">날짜 :</label>
+
+        <input class="mr-5" type="date" id="start" name="laundary_date" value="2022-09-22" min="2022-09-22"
+            max="2023-03-31">
+
+
+        <label class="mr-5" for="from" id="time">시간 : </label>
+        <select id="from" class="mr-5">
+            <option value="2">00:00 ~ 02:00</option>
+            <option value="4">02:00 ~ 04:00</option>
+            <option value="6">04:00 ~ 06:00</option>
+            <option value="8">06:00 ~ 08:00</option>
+            <option value="10">08:00 ~ 10:00</option>
+            <option value="12">10:00 ~ 12:00</option>
+            <option value="14">12:00 ~ 14:00</option>
+            <option value="16">14:00 ~ 16:00</option>
+            <option value="18">16:00 ~ 18:00</option>
+            <option value="20">18:00 ~ 20:00</option>
+            <option value="22">20:00 ~ 22:00</option>
+            <option value="24">22:00 ~ 24:00</option>
+        </select>
+        <button class="button is-link is-inline">
+            예약하기
+        </button>
+
+    </div>
+
+
+    <div id="circle_inuse"></div>
+    <div id="circle_available"></div>
+
+
+    <div class="laundry is-flex">
+        <div class="laundry_A is-relative">
+            <img class="ml-6 is-reletive" src="../static/image/A.png" alt="A_l">
+            <input type="radio" name="chk_info" value="A_l">A
+            <div id="circle_inuse" class="mx-6" style="margin-top:20px;"></div>
+        </div>
+        <div class="laundry_B">
+            <img class="ml-6" src="../static/image/B.png" alt="B_l">
+            <input type="radio" name="chk_info" value="B_l">B
+            <div id="circle_inuse" class="mx-6"></div>
+        </div>
+        <div class="laundry_C">
+            <img class="ml-6" src="../static/image/C.png" alt="C_l">
+            <input type="radio" name="chk_info" value="C_l">C
+            <div id="circle_inuse" class="mx-6"></div>
+        </div>
+        <div class="laundry_D">
+            <img class="ml-6" src="../static/image/D.png" alt="D_l">
+            <input type="radio" name="chk_info" value="D_l">D
+            <div id="circle_inuse" class="mx-6"></div>
+        </div>
+
+
+  
+  </div>
+</body>
+
+</html>

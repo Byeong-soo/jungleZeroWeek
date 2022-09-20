@@ -1,0 +1,22 @@
+html {
+    min-height: 100vh;
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    height: 100%;
+}
+
+body .container {
+    min-height: 100vh;
+    height: 100%;
+}
+
+.columns.is-vcentered {
+    -webkit-box-align: center;
+       -ms-flex-align: center;
+          align-items: center;
+          height: 100%;
+          width: 100%;
+}
