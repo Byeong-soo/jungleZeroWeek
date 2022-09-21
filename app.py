@@ -1,25 +1,25 @@
+from crypt import methods
+from curses import flash
+from distutils.debug import DEBUG
 import bcrypt
-from urllib import response
-from flask import Flask, render_template, jsonify, request, session, flash, redirect
+from flask import Flask, render_template, jsonify, request, session, flash,redirect,url_for,make_response
+from flask_jwt_extended.config import config
 from pymongo import MongoClient
+from flask_jwt_extended import *
+from jwt.exceptions import ExpiredSignatureError
+
 
 app = Flask(__name__)
 app.secret_key = 'some_secret'
+app.config["JWT_SECRET_KEY"] = "super-secret"
+jwt = JWTManager(app)
 
 client = MongoClient('localhost', 27017)
 db = client.washerReservation
 
-
-
 @app.route('/')
 def main():
-    return render_template('index.html',
-    title = '세탁자리구함')
-
-# 마이페이지
-@app.route('/mypage')
-def mypage():
-    return render_template('mypage.html', title='마이페이지')
+    return render_template('index.html',title = '세탁자리구함')
    
 @app.route('/login', methods=['POST'])
 def loginProccess():
@@ -30,14 +30,14 @@ def loginProccess():
     user = db.member.find_one({'id':id_receive},{'_id':False})
     
     if user is None :
-        flash("사용자 정보가 없거나 일치하지 않습니다.")
-        return render_template('index.html')
+        return jsonify({"result":False,"msg":"사용자 정보가 없거나 일치하지 않습니다."})
 
     if bcrypt.checkpw(password_receive.encode('utf-8'),user['password']) :
-        return render_template('reservation.html')
+        access_token = create_access_token(identity=id_receive,expires_delta=False)
+        
+        return jsonify({"result":True,"token": access_token})
     else:
-        flash("사용자 정보가 없거나 일치하지 않습니다.")
-        return render_template('index.html')
+        return jsonify({"result":False,"msg":"사용자 정보가 없거나 일치하지 않습니다."})
 
 @app.route('/joinMember', methods=['GET','POST'])
 def joinMember():
@@ -49,14 +49,22 @@ def joinMember():
          password_encode = password_receive.encode('utf-8')
          password_hashed = bcrypt.hashpw(password_encode, bcrypt.gensalt())
          password_check_receive = request.form['passwordCheck']
+
          name_receive = request.form['name']
          room_number_receive = request.form['roomNumber']
          phone_number_receive = request.form['phoneNumber']
-         member = {'id': id_receive,
-                 'password': password_hashed,
-                 'name': name_receive,
-                 'roomNumber': room_number_receive,
-                 'phoneNumber': phone_number_receive}
+
+    member = {'id':id_receive,
+                 'password':password_hashed,
+                 'name':name_receive,
+                 'roomNumber':room_number_receive,
+                 'phoneNumber':phone_number_receive}
+
+    # 아이디 중복 확인 로직
+    memberCount = len(list(db.member.find({'id':id_receive})))
+    if memberCount >= 1 :
+        flash("중복된 아이디입니다.")
+        return redirect(url_for('joinMember'))
 
     try:
         db.member.insert_one(member)
@@ -64,21 +72,27 @@ def joinMember():
         return render_template('index.html', value=jsonify({'result': 'fail','member':member})) 
     return redirect('/') 
 
-  
-@app.route('/mypage', methods=["GET"])
-def mypage_get():
-    reservations_list = list(db.reservations.find({},{'_id':False, }))
-    return jsonify({'reservations':reservations_list})
 
-@app.route('/mypage', methods=['POST'])
-def delete_word():
-    # 단어 삭제하기
-    word_receive = request.form['word_give']
-    db.words.delete_one({"word": word_receive})
-    db.examples.delete_many({"word": word_receive})
-    return jsonify({'result': 'success', 'msg': f'word "{word_receive}" deleted'})
+@app.route('/checkToken', methods=['GET'])
+@jwt_required()
+def reservation():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user),200
 
+@app.route('/reservation', methods=['GET'])
+def show_reservation():
+    token = request.cookies.get('token')
 
+    if token is None :
+        flash("로그인을 먼저해주세요")
+        return redirect('/')
+    try :
+        user = decode_token(token).get('sub')
+    except ExpiredSignatureError:
+        flash("유효하지않은 토큰입니다.") 
+        return redirect('/')
+    return render_template('reservation.html')
+    
 @app.route('/reservation', methods=['GET','POST'])
 def reservation():
     if request.method == 'GET':
@@ -96,99 +110,38 @@ def reservation():
     
     return render_template('reservation.html')
 
+@app.route('/mypage',methods=['GET'])
+def show_mypage():
+    token = request.cookies.get('token')
+    if token is None :
+        flash("로그인을 먼저해주세요")
+        return redirect('/')
+    try :
+        user = decode_token(token).get("sub")
+        member = db.member.find_one({'id':user})
 
+    except ExpiredSignatureError: 
+        flash("유효하지않은 토큰입니다.")
+        return redirect('/')
+    return render_template('mypage.html',member=member)
+
+
+@app.route('/modifyMember',methods=['POST'])
+@jwt_required()
+def modify_member():
+    id_receive = request.form['id']
+    room_number_receive = request.form['roomNumber']
+    phone_number_receive = request.form['phoneNumber']
+
+    db.member.update_one({'id':id_receive},{'$set':{'roomNumber':room_number_receive, 'phoneNumber':phone_number_receive}})
+    return jsonify({'result': 'success'})
+
+@app.route('/deleteMember',methods=['POST'])
+@jwt_required()
+def delete_member():
+    id_receive = request.form['id']
+    db.member.delete_one({'id':id_receive})
+    return jsonify({'result':'success'})
+   
 if __name__ == '__main__':
-   app.run('0.0.0.0', port=5000, debug=True)
-
-
-
-
-# from flask import Flask
-# app = Flask(__name__)
-#
-
-#
-# @app.route('/')
-# def home():
-#    return 'This is Home!'
-#
-# if __name__ == '__main__':
-#    app.run('0.0.0.0',port=5000,debug=True)
-#
-#
-#
-#
-# #
-# # @app.route('/')
-# # def parts():
-# #     return render_template('index.html',
-# #                            title='세탁자리구함')
-#
-#
-# @app.route('/mypage')
-# def mypage():
-#    return 'This is My Page!'
-#
-
-#
-# # -----------
-# #
-# #
-# # @app.route('/update_profile', methods=['POST'])
-# # def save_img():
-# #     token_receive = request.cookies.get('mytoken')
-# #     try:
-# #         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-# #         username = payload["id"]
-# #         name_receive = request.form["name_give"]
-# #         about_receive = request.form["about_give"]
-# #         new_doc = {
-# #             "profile_name": name_receive,
-# #             "profile_info": about_receive
-# #         }
-# #         if 'file_give' in request.files:
-# #             file = request.files["file_give"]
-# #             filename = secure_filename(file.filename)
-# #             extension = filename.split(".")[-1]
-# #             file_path = f"profile_pics/{username}.{extension}"
-# #             file.save("./static/" + file_path)
-# #             new_doc["profile_pic"] = filename
-# #             new_doc["profile_pic_real"] = file_path
-# #         db.users.update_one({'username': payload['id']}, {'$set': new_doc})
-# #         return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
-# #     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-# #         return redirect(url_for("home"))
-# #
-# #
-# # -----
-# #
-# # if __name__ == '__main__':
-# #     app.run('0.0.0.0', port=5000, debug=True)
-# #
-# # doc = {
-# #     'name':'bob',
-# #     'age':27
-# # }
-# #
-# # db.users.insert_one(doc)
-# #
-# # # 삽입
-# #
-# # # 저장 - 예시
-# #
-# # doc = {'user_id':'', 'time': , 'machine_number':''}
-# # db.reservations.insert_one(doc)
-# #
-# # # 한 개 찾기 - 예시
-# # reservation = db.reservations.find_one({'user_id':''})
-# #
-# #
-# #
-# # # 수정
-# # db.user_informations.update_one({'user_id':''},{'$set':{'' : }})
-# #
-# # # 삭제
-# # db.reservations.delete_one({'user_id':''})
-# #
-# #
-#
+    app.run('0.0.0.0', port=5000, debug=True)

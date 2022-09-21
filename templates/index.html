@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}" />
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     {% if title %}
     <title>{{ title }}</title>
     {% endif %}
@@ -30,28 +33,28 @@
                         <p class="subtitle is-4">세탁기 자리를 미리 예매해보세요!</p>
                     </div>
 
-                    <form class="column is-12" action="/login" method="POST">
+                    <div class="column is-12" action="/login" method="POST">
                         <div>
                             <div class="field">
                                 <label class="label">아이디</label>
                                 <div class="control">
-                                    <input class="input" type="text" placeholder="아이디를 입력해주세요" name="id">
+                                    <input class="input" type="text" placeholder="아이디를 입력해주세요" id="id_input">
                                 </div>
 
 
                                 <div class="field mt-5">
                                     <label class="label">비밀번호</label>
                                     <div class="control">
-                                        <input class="input" type="password" placeholder="비밀번호를 입력해주세요" name="password">
+                                        <input class="input" type="password" placeholder="비밀번호를 입력해주세요" id="password_input">
                                     </div>
                                 </div>
                             </div>
 
-                            <button type="submit" class="button is-link">로그인</button>
+                            <button type="button" class="button is-link" id="login_btn">로그인</button>
                             <button type="button" class="button is-link"
                                 onclick="location.href='joinMember'">회원가입</button>
                         </div>
-                    </form>
+                    </div>
 
                 </div>
             </div>

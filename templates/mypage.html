@@ -6,204 +6,112 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+        
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v6.2.0/js/all.js"></script>
 
-    <title>mypage</title>
+    <script src="{{ url_for('static', filename='js/mypage.js') }}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/mypage.css')}}" />
 
-    <style>
-        .wrap {
-            margin: 10px auto;
-            width: 300px;
-        }
-
-        .information_text_class {
-            line-height: 40px;
-        }
-
-        .reservation_text_class {
-            line-height: 40px;
-        }
-    </style>
-
-    <script>
-
-            function delete_reservation() {
-                $.ajax({
-                    type: "POST",
-                    url: `/api/delete_reservation`,
-                    data: {
-                        reservation_give: "{{ reservation_name }}",
-                    },
-                    success: function (response) {
-                        alert(response["msg"])
-                        window.location.href = "/main"
-                    }
-                });
-            }
-
-
-        function modify_reservation() {
-            alert('안녕!')
-        }
-
-
-        $(document).ready(function () {
-            show_reservation();
-        });
-
-        function show_reservation() {
-            $('#reservation-box').empty()
-            $.ajax({
-                type: 'GET',
-                url: '/mypage',
-                data: {},
-                success: function (response) {
-                    let rows = response['reservations']
-                    for (let i = 0; i < rows.length; i++) {
-                        let user_id = rows[i]['user_id']
-                        let time = rows[i]['time']
-                        let machine_number = rows[i]['machine_number']
-                        let temp_html = `<tr>
-                                            <td>${user_id}</td>
-                                            <td>${time}</td>
-                                            <td>${machine_number}</td>
-                                            <td><button className="button is-primary is-light" onClick="delete_reservation()"id="delete_reservation_button">삭제</button></td>
-                                          </tr>`
-                        $('#reservation-box').append(temp_html)
-                    }
-
-                }
-            });
-        }
-}
-
-        // <div>
-        //     <button className="button is-primary is-light" onClick="modify_reservation()"
-        //             id="modify_reservation_button">수정
-        //     </button>
-        //     <button className="button is-primary is-light" onClick="delete_reservation()"
-        //             id="delete_reservation_button">삭제
-        //     </button>
-        // </div>
-
-
-        //수정
-        function modify_information() {
-            let
-                room_number = $('#room_number').val()
-            let
-                phone_number = $('#phone_number').val()
-            let
-                my_name = $('#my_name').val()
-
-            $.ajax({
-                type: "POST",
-                url: "/mypage",
-                data: {'room_number_give': room_number, 'phone_number_give': phone_number, 'my_name_give': my_name},
-                success: function (response) {
-                    alert(response["msg"])
-                    window.location.reload()
-                }
-            });
-        }
-
-    </script>
-
+    {% if title %}
+    <title>{{ title }}</title>
+    {% endif %}
 
 </head>
 
 <body>
+    <!-- 회원가입 fail 일때 -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script>
+                alert("{{messages[-1]}}")
+            </script>
+        {% endif %}
+    {% endwith %}
 
-<div class="wrap" id="wrap_id">
-    <h1>mypage</h1>
-    &nbsp;
-    <div>
-        <h2><b>예약목록조회</b></h2>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">시간</th>
-                <th scope="col">세탁기번호</th>
-            </tr>
-            </thead>
-            <tbody id="reservation-box">
+    <div class="container">
 
-            </tbody>
-        </table>
+        <div class="columns is-mobile custom-title">
+            <div class="column is-three-fifths is-offset-one-fifth">
+                <div class="mt-5 has-text-centered">
+                    <h1 class="title is-3">회원정보</h1>
+                </div>
+            
+                <div class="columns is-centered custom-contents">
+                    <div class="column is-half">
+
+                        <div class="mt-5">
+
+                            <div class="field">
+                                <p class="control has-icons-left has-icons-right">
+                        
+                                    <input class="input" type="text" placeholder="아이디" name="id" disabled value="{{member['id']}}"
+                                    id="id_input">
+                    
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-id-badge"></i>
+                                    </span>
+                                    <span class="icon is-small is-right">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                </p>
+                            </div>
 
 
-        <div class="reservation_text_class">
+                            <div class="field">
+                                <p class="control has-icons-left has-icons-right">
+                                    <input class="input" type="text" placeholder="이름" name="name" disabled value="{{member['name']}}">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa-solid fa-signature"></i>
+                                    </span>
+                                    <span class="icon is-small is-right">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                </p>
+                            </div>
 
+                            <div class="field">
+                                <p class="control has-icons-left has-icons-right">
+                                    <input class="input" type="number" placeholder="호수" name="roomNumber" value="{{member['roomNumber']}}" id="roomNumber_input">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-person-shelter"></i>
+                                    </span>
+                                    <span class="icon is-small is-right">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                </p>
+                            </div>
 
-        </div>
-    </div>
-    &nbsp;
-    <div>
-        <h2><b>회원정보수정</b></h2>
+                            <div class="field">
+                                <p class="control has-icons-left has-icons-right">
+                                    <input class="input" type="number" placeholder="휴대폰 번호 ex)01011112222" name="phoneNumber" value="{{member['phoneNumber']}}"
+                                    id="phoneNumber_input">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-mobile"></i>
+                                    </span>
+                                    <span class="icon is-small is-right">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                </p>
+                            </div>
 
+                            <div class="is-flex mt-5">
+                                    <button type="button" class="is-flex-grow-1 button is-link mr-1" id="modify_btn">수정</button>
+                                    <button type="button" class="is-flex-grow-1 button is-danger ml-1" id="delete_btn">회원 탈퇴</button>
+                            </div>
+                            <div class="is-flex mt-1">
+                                <button type="button" class="is-flex-grow-1 button is-link" onclick="history.back();">되돌아가기</button>
+                            </div>
+                        </div>
 
-        <div class="information_text_class">
-            <span>ID님!</span>
-            <p>
-                방번호: <input id="room_number_input" class="input is-primary" style="width:100pt;height:25pt;" type="text"
-                            placeholder="입력해주세요">
-            </p>
-
-            <p>
-                전화번호: <input id="phone_number_input" class="input is-primary" style="width:100pt;height:25pt;"
-                             type="text" placeholder="입력해주세요">
-            </p>
-
-            <p>
-                이름: <input id="name_input" class="input is-primary" style="width:100pt;height:25pt;" type="text"
-                           placeholder="입력해주세요">
-            </p>
-
-            <div>
-
-                <button id="modify_information_button" class="button is-primary is-light"
-                        onclick="modify_information()">수정
-                </button>
-                <button id="go_back_button" class="button is-primary is-light" onclick="window.location.href='/main'">
-                    돌아가기
-                </button>
-
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-
-<!--<div class="mybox" id="bucket-list">-->
-<!--        <li>-->
-<!--            <h2>✅ 호주에서 스카이다이빙 하기</h2>-->
-<!--            <button onclick="done_bucket(5)" type="button" class="btn btn-outline-primary">완료!</button>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--            <h2 class="done">✅ 호주에서 스카이다이빙 하기</h2>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--            <h2>✅ 호주에서 스카이다이빙 하기</h2>-->
-<!--            <button type="button" class="btn btn-outline-primary">완료!</button>-->
-<!--        </li>-->
-<!--    </div>-->
-
-<!--<tr>-->
-<!--    <td>${user_id}</td>-->
-<!--    <td>${time}</td>-->
-<!--    <td>${machine_number}</td>-->
-<!--    <button class="button is-primary is-light" onclick="modify_reservation()"-->
-<!--            id="modify_reservation_button">수정-->
-<!--    </button>-->
-<!--    <button class="button is-primary is-light" onclick="delete_reservation()"-->
-<!--            id="delete_reservation_button">삭제-->
-<!--    </button>-->
-<!--</tr>-->
-<!--`-->
-
+    </div> <!-- container end-->
 </body>
 
 </html>
-
-

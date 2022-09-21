@@ -16,6 +16,15 @@
 </head>
 
 <body>
+    <!-- 회원가입 fail 일때 -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script>
+                alert("{{messages[-1]}}")
+            </script>
+        {% endif %}
+    {% endwith %}
+
     <div class="container">
 
         <div class="columns is-mobile custom-title">
@@ -31,6 +40,9 @@
 
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
+                                    {% if member %}
+                                    <input class="input" type="text" placeholder="아이디" name="id" value="{{member['id']}}">
+                                    {% endif %}
                                     <input class="input" type="text" placeholder="아이디" name="id">
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-id-badge"></i>
@@ -98,10 +110,10 @@
 
                             <div class="is-flex mt-5">
                                     <button type="submit" class="is-flex-grow-1 button is-link mr-1">회원가입</button>
-                                    <button type="reset" class="is-flex-grow-1 button is-danger mr-1">초기화</button>
+                                    <button type="reset" class="is-flex-grow-1 button is-danger ml-1">초기화</button>
                             </div>
                             <div class="is-flex mt-1">
-                                <button type="button" class="is-flex-grow-1 button is-link" onclick="location.replace('/');">되돌아가기</button>
+                                <button type="button" class="is-flex-grow-1 button is-link" onclick="location.replace('/')">되돌아가기</button>
                             </div>
                         </form>
 

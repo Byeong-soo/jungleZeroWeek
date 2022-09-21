@@ -5,8 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
 
     <style>
             .reservation_main {
@@ -21,6 +24,7 @@
             .ml-6 {
                 margin-left: 0rem!important;
             }
+
             .laundry_A_is-relative {
                 width: 300px;
                 text-align: center;
@@ -38,6 +42,7 @@
                 text-align: center;
                 padding-top: 40px;
             }
+
             .mx-5 {
                 display: flex;
                 flex-direction: row;
@@ -46,6 +51,7 @@
                 margin-top: 20px;
             }
             
+
             .laundry_A_buttons {
                 display: flex;
                 flex-direction: row;
@@ -61,7 +67,7 @@
                 justify-content: center;
                 margin-top: 20px;
             }
-            
+
             .laundry_C_buttons {
                 display: flex;
                 flex-direction: row;
@@ -77,7 +83,7 @@
                 justify-content: center;
                 margin-top: 20px;
             }
-                
+
             #circle_inuse {
                 background: red;
                 border-radius: 50%;
@@ -91,7 +97,6 @@
                 width: 14px;
                 height: 14px;
             }
-
             
     </style>
 
@@ -104,12 +109,13 @@
              frm.submit();
              return true;
             }
+
     </script>
 
 
-    {% if title %}
+    <!-- {% if title %}
     <title>{{ title }}</title>
-    {% endif %}
+    {% endif %} -->
 </head>
 
 <body>
@@ -118,7 +124,9 @@
             <span class="is-size-1" id="title"><b>세탁기 예약 현황</b></span>
             <div class="field is-grouped is-pulled-right" id="upper_button">
                 <p class="control">
+
                     <button class="button is-link">
+
                         My Page
                     </button>
                 </p>
@@ -131,6 +139,7 @@
         </div>
         <br>
         <br>
+
         <form action="/reservation" method="post" onsubmit='return info_chk()'>
         <div class="date">
                 <label for="select_date" class="mr-5">날짜 :</label>
@@ -138,6 +147,7 @@
                     max="2023-03-31"  >
                 <label class="mr-5" for="from" id="time">시간 : </label>
                 <select id="from" class="mr-5" name="laundry_time">
+
                     <option value="2">00:00 ~ 02:00</option>
                     <option value="4">02:00 ~ 04:00</option>
                     <option value="6">04:00 ~ 06:00</option>
@@ -152,40 +162,48 @@
                     <option value="24">22:00 ~ 24:00</option>
                 </select>
             <div>
+
                 <button class="button is-small is-link is-inline" onclick='return info_chk2(this.form);'>
                     조회하기
                 </button>
                 <button class="button is-small is-link is-inline">
+
                     예약하기
                 </button>
             </div>
         </div>
-        
-        
+
         <div class="laundry is-flex">
             <div class="laundry_A_is-relative">
                 <div class="laundry_A_buttons">
                     <div><input type="radio" name="chk_info" value="A_l">A</div>
+
                     <div id="circle_available" class="mx-6"></div>
                 </div>
                 <br>
                 <img class="ml-6" src="../static/image/A1.png" alt="A_l" >
+
             </div>
             <div class="laundry_B">
                 <div class="laundry_B_buttons">
                     <input type="radio" name="chk_info" value="B_l">B
+
                     <div id="circle_available" class="mx-6"></div>
                 </div>
                 <br>
                 <img class="ml-6 " src="../static/image/B1.png" alt="B_l">
+
             </div>
             <div class="laundry_C">
                 <div class="laundry_C_buttons">
                     <input type="radio" name="chk_info" value="C_l">C
+
                     <div id="circle_available" class="mx-6"></div>
                 </div>
                 <br>
                 <img class="ml-6" src="../static/image/C1.png" alt="C_l">
+
+
             </div>
         </div>
         <br>
@@ -202,8 +220,10 @@
         <!-- <p><div id="circle_inuse"></div></p>
         <div id="circle_available"></div> -->
 
+
     </div>
 </form>
+
 </body>
 
 </html>
