@@ -1,8 +1,6 @@
-from cmath import log
 from crypt import methods
 from curses import flash
 from distutils.debug import DEBUG
-import re
 import bcrypt
 from flask import Flask, render_template, jsonify, request, session, flash,redirect,url_for,make_response
 from flask_jwt_extended.config import config
@@ -18,7 +16,6 @@ jwt = JWTManager(app)
 
 client = MongoClient('localhost', 27017)
 db = client.washerReservation
-
 
 @app.route('/')
 def main():
@@ -75,6 +72,7 @@ def joinMember():
         return render_template('index.html', value=jsonify({'result': 'fail','member':member})) 
     return redirect('/') 
 
+
 @app.route('/checkToken', methods=['GET'])
 @jwt_required()
 def reservation():
@@ -93,6 +91,23 @@ def show_reservation():
     except ExpiredSignatureError:
         flash("유효하지않은 토큰입니다.") 
         return redirect('/')
+    return render_template('reservation.html')
+    
+@app.route('/reservation', methods=['GET','POST'])
+def reservation():
+    if request.method == 'GET':
+        return render_template('reservation.html', title= '예약페이지')
+    else:
+        laundry_receive = request.form['chk_info']
+        date_receive = request.form['laundry_date'] 
+        time_receive = request.form['laundry_time'] 
+        laundry ={'chk_info' : laundry_receive,
+                'date' : date_receive,
+                'time' : time_receive}
+        
+    db.laundry.insert_one(laundry)
+
+    
     return render_template('reservation.html')
 
 @app.route('/mypage',methods=['GET'])
