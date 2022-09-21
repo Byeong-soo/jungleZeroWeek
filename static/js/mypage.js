@@ -4,10 +4,12 @@ document.addEventListener("DOMContentLoaded", function () {
     let deleteBtn = document.getElementById("delete_btn");
 
     let idValue = document.getElementById("id_input").value
-    let phoneNumberValue = document.getElementById("phoneNumber_input").value
-    let roomNumberValue = document.getElementById("roomNumber_input").value
+
 
     modifyBtn.addEventListener("click", function () {
+
+        let phoneNumberValue = document.getElementById("phoneNumber_input").value
+        let roomNumberValue = document.getElementById("roomNumber_input").value
 
         let cookie = document.cookie
         let token = cookie.split('=')[1]

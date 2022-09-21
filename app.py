@@ -75,27 +75,40 @@ def joinMember():
 
 @app.route('/checkToken', methods=['GET'])
 @jwt_required()
-def reservation():
+def checkToken():
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user),200
 
-@app.route('/reservation', methods=['GET'])
-def show_reservation():
-    token = request.cookies.get('token')
-
-    if token is None :
-        flash("로그인을 먼저해주세요")
-        return redirect('/')
-    try :
-        user = decode_token(token).get('sub')
-    except ExpiredSignatureError:
-        flash("유효하지않은 토큰입니다.") 
-        return redirect('/')
-    return render_template('reservation.html')
+@app.route('/inqury', methods=["POST"])
+def inqury():
+    in_date = request.form['laundry_date']
+    in_time = request.form['laundry_time']
     
+    inDate = list(db.laundry.find({'date':in_date,'time':in_time}))
+    
+    using_l = []
+    for iNdate in inDate:
+        print(iNdate['chk_info'])
+        using_l.append(iNdate['chk_info'])
+    
+    
+    return render_template('reservation.html', dataa = using_l)
+
+
 @app.route('/reservation', methods=['GET','POST'])
 def reservation():
     if request.method == 'GET':
+
+        token = request.cookies.get('token')
+
+        if token is None :
+            flash("로그인을 먼저해주세요")
+            return redirect('/')
+        try :
+            user = decode_token(token).get('sub')
+        except ExpiredSignatureError:
+            flash("유효하지않은 토큰입니다.") 
+            return redirect('/')
         return render_template('reservation.html', title= '예약페이지')
     else:
         laundry_receive = request.form['chk_info']
@@ -104,7 +117,7 @@ def reservation():
         laundry ={'chk_info' : laundry_receive,
                 'date' : date_receive,
                 'time' : time_receive}
-        
+    
     db.laundry.insert_one(laundry)
 
     
