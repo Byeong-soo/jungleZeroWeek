@@ -9,62 +9,101 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 
     <style>
-        img {
-            width: 200px;
-        }
+            .reservation_main {
+                margin: 40px;}
 
-        .top {
-            margin-top: 150px;
-        }
+            .date {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
-        .date {
-            margin-left: 250px;
-            font-size: 20px;
-            font-weight: bolder;
-        }
+            .ml-6 {
+                margin-left: 0rem!important;
+            }
+            .laundry_A_is-relative {
+                width: 300px;
+                text-align: center;
+                padding-top: 40px;
+            }
 
-        .start {
-            width: 200px;
-            font-size: 50px;
-        }
+            .laundry_B {
+                width: 300px;
+                text-align: center;
+                padding-top: 40px;
+            }
 
-        #title {
-            margin-left: 250px;
-            font-weight: bolder;
-        }
+            .laundry_C {
+                width: 300px;
+                text-align: center;
+                padding-top: 40px;
+            }
+            .mx-5 {
+                display: flex;
+                flex-direction: row;
+                align-items: left;
+                justify-content: center;
+                margin-top: 20px;
+            }
+            
+            .laundry_A_buttons {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                margin-top: 20px;
+            }
 
-        #upper_button {
-            width: 200px;
-            float: right;
-            margin-right: 400px;
-        }
+            .laundry_B_buttons {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                margin-top: 20px;
+            }
+            
+            .laundry_C_buttons {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                margin-top: 20px;
+            }
 
-        .laundry {
-            width: 1400px;
-            margin: auto;
-        }
+            .laundry_D_buttons {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                margin-top: 20px;
+            }
+                
+            #circle_inuse {
+                background: red;
+                border-radius: 50%;
+                width: 14px;
+                height: 14px;
+            }
 
-        .laundry_A {
-            position:absolute;
-        }
+            #circle_available {
+                background: yellowgreen;
+                border-radius: 50%;
+                width: 14px;
+                height: 14px;
+            }
 
-        #circle_inuse {
-            background: red;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-        }
-
-        #circle_available {
-            background: yellowgreen;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-        }
+            
     </style>
 
     <script>
-
+        function info_chk() {
+            return true;
+            }
+        function info_chk2(frm) {
+             frm.action='/inqury';
+             frm.submit();
+             return true;
+            }
     </script>
 
 
@@ -74,81 +113,97 @@
 </head>
 
 <body>
-    <div class="top">
-        <span class="is-size-1" id="title">세탁기 예약 현황</span>
-        <div class="field is-grouped is-pulled-right" id="upper_button">
-            <p class="control">
-                <button class="button is-link">
-                    My Page
+    <div class="reservation_main">
+        <div class="top">
+            <span class="is-size-1" id="title"><b>세탁기 예약 현황</b></span>
+            <div class="field is-grouped is-pulled-right" id="upper_button">
+                <p class="control">
+                    <button class="button is-link">
+                        My Page
+                    </button>
+                </p>
+                <p class="control">
+                    <button class="button is-danger">
+                        로그아웃
+                    </button>
+                </p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <form action="/reservation" method="post" onsubmit='return info_chk()'>
+        <div class="date">
+                <label for="select_date" class="mr-5">날짜 :</label>
+                <input class="mr-5" type="date" id="start" name="laundry_date" value="2022-09-22" min="2022-09-22"
+                    max="2023-03-31"  >
+                <label class="mr-5" for="from" id="time">시간 : </label>
+                <select id="from" class="mr-5" name="laundry_time">
+                    <option value="2">00:00 ~ 02:00</option>
+                    <option value="4">02:00 ~ 04:00</option>
+                    <option value="6">04:00 ~ 06:00</option>
+                    <option value="8">06:00 ~ 08:00</option>
+                    <option value="10">08:00 ~ 10:00</option>
+                    <option value="12">10:00 ~ 12:00</option>
+                    <option value="14">12:00 ~ 14:00</option>
+                    <option value="16">14:00 ~ 16:00</option>
+                    <option value="18">16:00 ~ 18:00</option>
+                    <option value="20">18:00 ~ 20:00</option>
+                    <option value="22">20:00 ~ 22:00</option>
+                    <option value="24">22:00 ~ 24:00</option>
+                </select>
+            <div>
+                <button class="button is-small is-link is-inline" onclick='return info_chk2(this.form);'>
+                    조회하기
                 </button>
-            </p>
-            <p class="control">
-                <button class="button is-danger">
-                    로그아웃
+                <button class="button is-small is-link is-inline">
+                    예약하기
                 </button>
-            </p>
+            </div>
         </div>
+        
+        
+        <div class="laundry is-flex">
+            <div class="laundry_A_is-relative">
+                <div class="laundry_A_buttons">
+                    <div><input type="radio" name="chk_info" value="A_l">A</div>
+                    <div id="circle_available" class="mx-6"></div>
+                </div>
+                <br>
+                <img class="ml-6" src="../static/image/A1.png" alt="A_l" >
+            </div>
+            <div class="laundry_B">
+                <div class="laundry_B_buttons">
+                    <input type="radio" name="chk_info" value="B_l">B
+                    <div id="circle_available" class="mx-6"></div>
+                </div>
+                <br>
+                <img class="ml-6 " src="../static/image/B1.png" alt="B_l">
+            </div>
+            <div class="laundry_C">
+                <div class="laundry_C_buttons">
+                    <input type="radio" name="chk_info" value="C_l">C
+                    <div id="circle_available" class="mx-6"></div>
+                </div>
+                <br>
+                <img class="ml-6" src="../static/image/C1.png" alt="C_l">
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="mx-5">
+            <div id="circle_inuse" class="mx-6"></div><p>사용중</p>
+            <div id="circle_available" class="mx-6"></div><p>사용가능</p>
+        </div>
+
+        
+
+        <!-- <p><div id="circle_inuse"></div></p>
+        <div id="circle_available"></div> -->
+
     </div>
-    <br>
-    <br>
-    <div class="date">
-        <label for="select_date" class="mr-5">날짜 :</label>
-
-        <input class="mr-5" type="date" id="start" name="laundary_date" value="2022-09-22" min="2022-09-22"
-            max="2023-03-31">
-
-
-        <label class="mr-5" for="from" id="time">시간 : </label>
-        <select id="from" class="mr-5" name="laundry_time">
-            <option value="2">00:00 ~ 02:00</option>
-            <option value="4">02:00 ~ 04:00</option>
-            <option value="6">04:00 ~ 06:00</option>
-            <option value="8">06:00 ~ 08:00</option>
-            <option value="10">08:00 ~ 10:00</option>
-            <option value="12">10:00 ~ 12:00</option>
-            <option value="14">12:00 ~ 14:00</option>
-            <option value="16">14:00 ~ 16:00</option>
-            <option value="18">16:00 ~ 18:00</option>
-            <option value="20">18:00 ~ 20:00</option>
-            <option value="22">20:00 ~ 22:00</option>
-            <option value="24">22:00 ~ 24:00</option>
-        </select>
-        <button class="button is-link is-inline">
-            예약하기
-        </button>
-
-    </div>
-
-
-    <div id="circle_inuse"></div>
-    <div id="circle_available"></div>
-
-
-    <div class="laundry is-flex">
-        <div class="laundry_A is-relative">
-            <img class="ml-6 is-reletive" src="../static/image/A.png" alt="A_l">
-            <input type="radio" name="chk_info" value="A_l">A
-            <div id="circle_inuse" class="mx-6" style="margin-top:20px;"></div>
-        </div>
-        <div class="laundry_B">
-            <img class="ml-6" src="../static/image/B.png" alt="B_l">
-            <input type="radio" name="chk_info" value="B_l">B
-            <div id="circle_inuse" class="mx-6"></div>
-        </div>
-        <div class="laundry_C">
-            <img class="ml-6" src="../static/image/C.png" alt="C_l">
-            <input type="radio" name="chk_info" value="C_l">C
-            <div id="circle_inuse" class="mx-6"></div>
-        </div>
-        <div class="laundry_D">
-            <img class="ml-6" src="../static/image/D.png" alt="D_l">
-            <input type="radio" name="chk_info" value="D_l">D
-            <div id="circle_inuse" class="mx-6"></div>
-        </div>
-
-
-  
-  </div>
+</form>
 </body>
 
 </html>

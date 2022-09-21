@@ -1,5 +1,3 @@
-from crypt import methods
-from curses import flash
 import bcrypt
 from urllib import response
 from flask import Flask, render_template, jsonify, request, session, flash, redirect
@@ -10,25 +8,6 @@ app.secret_key = 'some_secret'
 
 client = MongoClient('localhost', 27017)
 db = client.washerReservation
-
-
-
-
-from pymongo import MongoClient
-client = MongoClient('mongodb+srv://test:sparta@cluster0.7pihtjb.mongodb.net/?retryWrites=true&w=majority')
-db = client.dbsparta
-
-
-doc = {'user_id':'KIM123', 'time':202201022100, 'machine_number':3}
-db.reservations.insert_one(doc)
-
-
-
-# date = datetime.datetime(2011, 11, 17, 18, 0)
-# db.mydatabase.mycollection.insert({"date" : date})
-
-
-
 
 
 
@@ -98,7 +77,25 @@ def delete_word():
     db.words.delete_one({"word": word_receive})
     db.examples.delete_many({"word": word_receive})
     return jsonify({'result': 'success', 'msg': f'word "{word_receive}" deleted'})
-   
+
+
+@app.route('/reservation', methods=['GET','POST'])
+def reservation():
+    if request.method == 'GET':
+        return render_template('reservation.html', title= '예약페이지')
+    else:
+        laundry_receive = request.form['chk_info']
+        date_receive = request.form['laundry_date'] 
+        time_receive = request.form['laundry_time'] 
+        laundry ={'chk_info' : laundry_receive,
+                'date' : date_receive,
+                'time' : time_receive}
+        
+    db.laundry.insert_one(laundry)
+
+    
+    return render_template('reservation.html')
+
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)
