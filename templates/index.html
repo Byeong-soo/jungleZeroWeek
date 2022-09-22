@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}" />
 
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     {% if title %}
     <title>{{ title }}</title>
@@ -17,15 +18,15 @@
 <body>
     <!-- 로그인 fail 일때 -->
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <script>
-                alert("{{messages[-1]}}")
-            </script>
-        {% endif %}
+    {% if messages %}
+    <script>
+        alert("{{messages[-1]}}")
+    </script>
+    {% endif %}
     {% endwith %}
 
     <div class="container">
-        <div class="columns is-flex-direction-row-reverse is-vcentered">
+        <div class="columns is-flex is-vcentered is-justify-content-center">
             <div class="columns is-centered">
                 <div class="column is-12">
                     <div>
@@ -45,14 +46,17 @@
                                 <div class="field mt-5">
                                     <label class="label">비밀번호</label>
                                     <div class="control">
-                                        <input class="input" type="password" placeholder="비밀번호를 입력해주세요" id="password_input">
+                                        <input class="input" type="password" placeholder="비밀번호를 입력해주세요"
+                                            id="password_input">
                                     </div>
                                 </div>
                             </div>
 
-                            <button type="button" class="button is-link" id="login_btn">로그인</button>
-                            <button type="button" class="button is-link"
-                                onclick="location.href='joinMember'">회원가입</button>
+                            <div class="is-flex">
+                                <button type="button" class="is-flex-grow-1 button is-link mr-1" id="login_btn">로그인</button>
+                                <button type="button" class="is-flex-grow-1 button is-link ml-1"
+                                    onclick="location.href='joinMember'">회원가입</button>
+                            </div>
                         </div>
                     </div>
 

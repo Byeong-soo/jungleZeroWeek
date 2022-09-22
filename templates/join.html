@@ -36,14 +36,11 @@
                 <div class="columns is-centered custom-contents">
                     <div class="column is-half">
 
-                        <form class="mt-5" action="/joinMember" method="post">
+                        <form id="joinForm" class="mt-5" action="/joinMember" method="post">
 
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    {% if member %}
-                                    <input class="input" type="text" placeholder="아이디" name="id" value="{{member['id']}}">
-                                    {% endif %}
-                                    <input class="input" type="text" placeholder="아이디" name="id">
+                                    <input class="input" type="text" placeholder="아이디(영문숫자 4~12)" id="id" name="id" value="" required>
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-id-badge"></i>
                                     </span>
@@ -55,7 +52,7 @@
 
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <input class="input" type="password" placeholder="비밀번호" name="password">
+                                    <input class="input" type="password" placeholder="비밀번호" id="password" name="password" required>
                                     <span class="icon is-small is-left">
                                         <span class="mdi mdi-lock"></span>
                                         <!-- <i class="fa-duotone fa-shield-keyhole"></i> -->
@@ -65,7 +62,7 @@
 
                             <div class="field">
                                 <p class="control has-icons-left">
-                                    <input class="input" type="password" placeholder="비밀번호 확인" name="passwordCheck">
+                                    <input class="input" type="password" placeholder="비밀번호 확인" id="passwordCheck"  name="passwordCheck" required>
                                     <span class="icon is-small is-left">
                                         <span class="mdi mdi-lock-check"></span>
                                     </span>
@@ -74,7 +71,7 @@
 
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    <input class="input" type="text" placeholder="이름" name="name">
+                                    <input class="input" type="text" placeholder="이름" name="name" id="name" required>
                                     <span class="icon is-small is-left">
                                         <i class="fa-solid fa-signature"></i>
                                     </span>
@@ -86,7 +83,7 @@
 
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    <input class="input" type="number" placeholder="호수" name="roomNumber">
+                                    <input class="input" type="number" placeholder="호수" name="roomNumber" id="rommNumber" required>
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-person-shelter"></i>
                                     </span>
@@ -98,7 +95,7 @@
 
                             <div class="field">
                                 <p class="control has-icons-left has-icons-right">
-                                    <input class="input" type="number" placeholder="휴대폰 번호 ex)01011112222" name="phoneNumber">
+                                    <input class="input" type="number" placeholder="휴대폰 번호 ex)01011112222" id="phoneNumber" name="phoneNumber" required>
                                     <span class="icon is-small is-left">
                                         <i class="fas fa-mobile"></i>
                                     </span>
@@ -109,7 +106,7 @@
                             </div>
 
                             <div class="is-flex mt-5">
-                                    <button type="submit" class="is-flex-grow-1 button is-link mr-1">회원가입</button>
+                                    <button type="button" id="joinBtn" class="is-flex-grow-1 button is-link mr-1">회원가입</button>
                                     <button type="reset" class="is-flex-grow-1 button is-danger ml-1">초기화</button>
                             </div>
                             <div class="is-flex mt-1">
