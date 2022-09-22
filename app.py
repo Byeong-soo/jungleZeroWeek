@@ -1,12 +1,14 @@
 from crypt import methods
 from curses import flash
 from distutils.debug import DEBUG
+import re
 import bcrypt
 from flask import Flask, render_template, jsonify, request, session, flash,redirect,url_for,make_response
 from flask_jwt_extended.config import config
 from pymongo import MongoClient
 from flask_jwt_extended import *
 from jwt.exceptions import ExpiredSignatureError
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -14,12 +16,23 @@ app.secret_key = 'some_secret'
 app.config["JWT_SECRET_KEY"] = "super-secret"
 jwt = JWTManager(app)
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://ubs4939:DBqudtn587@3.34.47.69', 27017)
 db = client.washerReservation
 
 @app.route('/')
 def main():
-    return render_template('index.html',title = '세탁자리구함')
+    token = request.cookies.get('token')
+    if token is None :
+        return render_template('index.html',title = '세탁자리구함')
+    try :
+        decode_token(token).get("sub")
+    except ExpiredSignatureError: 
+        return render_template('index.html',title = '세탁자리구함')
+    return redirect('/reservation')
+
+@app.route('/login', methods=['GET'])
+def loginPage():
+    return redirect('/')
    
 @app.route('/login', methods=['POST'])
 def loginProccess():
@@ -79,7 +92,8 @@ def checkToken():
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user),200
 
-@app.route('/inqury', methods=["POST"])
+@app.route('/getReservations', methods=["POST"])
+@jwt_required()
 def inqury():
     in_date = request.form['laundry_date']
     in_time = request.form['laundry_time']
@@ -88,11 +102,9 @@ def inqury():
     
     using_l = []
     for iNdate in inDate:
-        print(iNdate['chk_info'])
         using_l.append(iNdate['chk_info'])
     
-    
-    return render_template('reservation.html', dataa = using_l)
+    return jsonify(reservation=using_l)
 
 
 @app.route('/reservation', methods=['GET','POST'])
@@ -105,13 +117,18 @@ def reservation():
             flash("로그인을 먼저해주세요")
             return redirect('/')
         try :
+            jti = decode_token(token)['jti']
             user = decode_token(token).get('sub')
         except ExpiredSignatureError:
-            flash("유효하지않은 토큰입니다.") 
+            flash("접속이 만료되었습니다. 다시로그인 해주세요") 
+            return redirect('/')
+        logoutCheck = jti in jwt_blocklist
+        if logoutCheck :
+            flash("유효하지않은 토큰입니다.")
             return redirect('/')
         return render_template('reservation.html', title= '예약페이지')
     else:
-        laundry_receive = request.form['chk_info']
+        laundry_receive = request.form['washer']
         date_receive = request.form['laundry_date'] 
         time_receive = request.form['laundry_time'] 
         laundry ={'chk_info' : laundry_receive,
@@ -120,8 +137,8 @@ def reservation():
     
     db.laundry.insert_one(laundry)
 
-    
-    return render_template('reservation.html')
+    flash("예약이 완료되었습니다 시간을 지켜주세요")
+    return redirect('/reservation')
 
 @app.route('/mypage',methods=['GET'])
 def show_mypage():
@@ -155,6 +172,21 @@ def delete_member():
     id_receive = request.form['id']
     db.member.delete_one({'id':id_receive})
     return jsonify({'result':'success'})
+
+jwt_blocklist = set()
+
+@jwt.token_in_blocklist_loader
+def check_if_token_is_revoked(jwt_header, jwt_payload) :
+	jti = jwt_payload['jti']
+	return jti in jwt_blocklist
+
+@app.route('/tokenBlock', methods=['GET'])
+@jwt_required()
+def user_logout() :
+    jti = get_jwt()['jti']
+    print(jti) 
+    jwt_blocklist.add(jti)
+    return jsonify({'result':'success'})
    
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+    app.run('0.0.0.0', port=8000, debug=True)

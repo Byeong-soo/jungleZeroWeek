@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded",function() {
                             xhr.setRequestHeader("Authorization","Bearer "+ token)
                         },
                         success: function (response) {
-                          location.href="/reservation"
+                          location.replace("/reservation")
                         }
                     })
                 }

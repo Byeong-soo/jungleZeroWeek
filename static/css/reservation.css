@@ -1,0 +1,52 @@
+.mt-10{
+    margin-top: 5rem;
+}
+
+.mr-10{
+    margin-right: 5rem;
+}
+
+.ml-10{
+    margin-left:5rem;
+}
+
+.text-vertical-center {
+  height: 45px;
+  border: 1px solid #444;
+  display: table-cell !important;
+  vertical-align: middle !important;
+  }
+
+.custom-img-div{
+    position: relative;
+}
+
+.custom-machine{
+    /* position: absolute; */
+    z-index:1;
+}
+
+img{
+    cursor: pointer;
+}
+
+.custom-x{
+    position: absolute;
+    z-index: 3;
+}
+
+.custom-check{
+    position: absolute;
+    z-index:3;
+}
+
+.div-hide{
+    display: none;
+}
+
+.img-show{
+    display: block;
+}
+.img-hide{
+    display: none;
+}
